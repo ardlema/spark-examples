@@ -13,8 +13,13 @@ class CombinerExamplesSpec
     val expectedAvgArray = Array(("panda",1.0), ("pirate",3.0), ("pink", 3.5))
   }
 
-  "CombinerExamples" should "get the average of a key value rdd" in new AverageRDD {
+  "CombinerExamples" should "get the average of a key value rdd using combineByKey" in new AverageRDD {
     val avgResult = getPerKeyAverageUsingCombineByKey(rdd).collect
+    avgResult should contain theSameElementsAs(expectedAvgArray)
+  }
+
+  it should "get the average of a key value rdd using aggregate" in new AverageRDD {
+    val avgResult = getPerKeyAverageUsingAggregateByKey(rdd).collect
     avgResult should contain theSameElementsAs(expectedAvgArray)
   }
 }
