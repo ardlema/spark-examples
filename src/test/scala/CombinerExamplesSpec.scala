@@ -8,11 +8,14 @@ class CombinerExamplesSpec
   with ShouldMatchers {
 
   trait AverageRDD {
+
     val rdd = sc.parallelize(Seq(("panda", 1), ("pink", 3), ("pirate", 3), ("panda", 1), ("pink", 4)))
+    val expectedAvgArray = Array(("panda",1.0), ("pirate",3.0), ("pink", 3.5))
   }
 
   "CombinerExamples" should "get the average of a key value rdd" in new AverageRDD {
-    getPerKeyAverageUsingCombineByKey(rdd) should be(Seq("panda",0.5), Seq("pirate",3), Seq("pink", 3.5))
+    val avgResult = getPerKeyAverageUsingCombineByKey(rdd).collect
+    avgResult should contain theSameElementsAs(expectedAvgArray)
   }
 }
 
