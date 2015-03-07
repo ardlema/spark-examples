@@ -27,5 +27,12 @@ trait CombinerExamples {
     val valuesAggregated = values.aggregateByKey(Seq[Int]())(seqOp, combOp)
     valuesAggregated.map{ case (key, value) => (key, value.sum.toFloat / value.size) }
   }
+
+  def getPerKeyAverageUsingReduceByKey(values: RDD[(String, Int)]): RDD[(String, Float)] = {
+    val reduceFunction = (v1: (Int, Int), v2: (Int, Int)) => ((v1._1 + v2._1), (v1._2 + v2._2))
+
+    val valuesReduced = values.mapValues(v => (v,1)).reduceByKey(reduceFunction)
+    valuesReduced.map{ case (key, value) => (key, value._1 / value._2.toFloat) }
+  }
 }
 

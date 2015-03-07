@@ -22,5 +22,10 @@ class CombinerExamplesSpec
     val avgResult = getPerKeyAverageUsingAggregateByKey(rdd).collect
     avgResult should contain theSameElementsAs(expectedAvgArray)
   }
+
+  it should "get the average of a key value rdd using reduceByKey" in new AverageRDD {
+    val avgResult = getPerKeyAverageUsingReduceByKey(rdd).collect
+    avgResult should contain theSameElementsAs(expectedAvgArray)
+  }
 }
 
